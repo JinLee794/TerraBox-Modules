@@ -4,6 +4,10 @@ variable "name" {
 variable "resource_group_name" {
     type = string
 }
+variable "nic_resource_group_name" {
+    type = string
+    default = ""
+}
 variable "location" {
     type = string
 }

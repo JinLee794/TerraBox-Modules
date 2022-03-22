@@ -17,7 +17,7 @@ data "azurerm_key_vault_secret" "admin_password" {
 resource "azurerm_network_interface" "vm_nic" {
   name                = "nic-${var.vm_name}-pdp-${var.env}"
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.nic_resource_group_name != "" ? var.nic_resource_group_name : var.resource_group_name
   tags                = var.tags
 
   ip_configuration {
@@ -26,7 +26,6 @@ resource "azurerm_network_interface" "vm_nic" {
     private_ip_address_allocation = "dynamic"
   }
 }
-
 
 resource "azurerm_windows_virtual_machine" "this" {
   name                       = var.name
@@ -172,21 +171,21 @@ SETTINGS
   }
 }
 
-resource "azurerm_virtual_machine_extension" "WindowsAgent-AzureSecurityCenter" {
-  // count = var.extensions_type_list
-  name                 = "${var.name}-WindowsAgent.AzureSecurityCenter"
-  virtual_machine_id   = azurerm_windows_virtual_machine.this.id
-  publisher            = "Qualys"
-  type                 = "Qualys.WindowsAgent.AzureSecurityCenter"
-  type_handler_version = "1.0"
+// resource "azurerm_virtual_machine_extension" "WindowsAgent-AzureSecurityCenter" {
+//   // count = var.extensions_type_list
+//   name                 = "WindowsAgent.AzureSecurityCenter"
+//   virtual_machine_id   = azurerm_windows_virtual_machine.this.id
+//   publisher            = "Qualys"
+//   type                 = "Qualys.WindowsAgent.AzureSecurityCenter"
+//   type_handler_version = "1.0"
 
-//   settings = <<SETTINGS
-//     {
-//         "workspaceId": "${var.law_id}"
-//     }
-// SETTINGS
+// //   settings = <<SETTINGS
+// //     {
+// //         "workspaceId": "${var.law_id}"
+// //     }
+// // SETTINGS
 
-  tags = {
-    environment = var.env
-  }
-}
+//   tags = {
+//     environment = var.env
+//   }
+// }
