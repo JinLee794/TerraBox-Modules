@@ -1,11 +1,16 @@
-// data "azurerm_subnet" "this" {
-//   name                 = var.subnet_name
-//   virtual_network_name = "production"
-//   resource_group_name  = "networking"
-// }
+data "azurerm_key_vault" "this" {
+  name                = var.key_vault_name
+  resource_group_name = var.key_vault_resource_group_name
+}
+
+data "azurerm_key_vault_secret" "ssh_pub_key" {
+  name         = var.ssh_public_key_name
+  key_vault_id = data.azurerm_key_vault.this.id
+}
+
 
 resource "azurerm_network_interface" "this" {
-  name                = "${var.name}-eni"
+  name                = var.env == "dev" ? "${var.name}-eni" : "${var.env}-${var.name}-eni"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -17,21 +22,23 @@ resource "azurerm_network_interface" "this" {
 }
 
 resource "azurerm_linux_virtual_machine" "this" {
-  name                            = var.name
-  location                        = var.location
-  resource_group_name             = var.resource_group_name
-  admin_password                  = var.admin_password
+  name                = var.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  availability_set_id = var.availability_set_id
+
   disable_password_authentication = false
-  // admin_ssh_key {
-  //   username   = var.admin_username
-  //   public_key = file(var.ssh_public_key)
-  // }
 
   size           = var.size
   admin_username = var.admin_username
   network_interface_ids = [
     azurerm_network_interface.this.id,
   ]
+
+  admin_ssh_key {
+    username   = var.admin_username
+    public_key = data.azurerm_key_vault_secret.ssh_pub_key.value
+  }
 
   os_disk {
     caching              = "ReadWrite"
@@ -44,6 +51,11 @@ resource "azurerm_linux_virtual_machine" "this" {
     sku       = var.source_image_reference["sku"]
     version   = var.source_image_reference["version"]
   }
+
+  # Custom images from SIG
+  // storage_image_reference {
+  //   id = "<ID of Image>"
+  // }
 
   tags = var.tags
 }

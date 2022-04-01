@@ -9,7 +9,12 @@ variable "location" {
 }
 
 variable "tags" {
-  type        = map(any)
-  description = "Map of key value pairs for the resource tagging. Default: none."
-  default     = {}
+  description = "Map of key value pairs for the resource tagging by business."
+  type = object({
+    BusinessUnit        = string
+    OperationsTeam      = string
+    BusinessCriticality = string
+    DataClassification  = string
+    WorkloadName        = string
+  })
 }

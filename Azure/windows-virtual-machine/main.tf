@@ -1,7 +1,7 @@
 
 data "azurerm_key_vault" "this" {
   name                = var.law_key_vault_name
-  resource_group_name = var.law_key_vault_rg_name
+  resource_group_name = var.law_key_vault_resource_group_name
 }
 
 data "azurerm_key_vault_secret" "law-win-agent-key" {
@@ -28,17 +28,17 @@ resource "azurerm_network_interface" "vm_nic" {
 }
 
 resource "azurerm_windows_virtual_machine" "this" {
-  name                       = var.name
-  resource_group_name        = var.resource_group_name
-  location                   = var.location
-  size                       = "Standard_F4"
-  tags                       = var.tags
-  timezone                   = "GMT Standard Time"
-  enable_automatic_updates   = true
-  patch_mode                 = "AutomaticByOS"
-  provision_vm_agent         = true
-  admin_username             = var.admin_username
-  admin_password             = data.azurerm_key_vault_secret.admin_password.value
+  name                     = var.name
+  resource_group_name      = var.resource_group_name
+  location                 = var.location
+  size                     = "Standard_F4"
+  tags                     = var.tags
+  timezone                 = "GMT Standard Time"
+  enable_automatic_updates = true
+  patch_mode               = "AutomaticByOS"
+  provision_vm_agent       = true
+  admin_username           = var.admin_username
+  admin_password           = data.azurerm_key_vault_secret.admin_password.value
 
   computer_name              = var.vm_name
   allow_extension_operations = true
