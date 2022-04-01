@@ -27,7 +27,7 @@ variable "admin_password_secret_name" {
 variable "law_key_vault_name" {
     type = string
 }
-variable "law_key_vault_rg_name" {
+variable "law_key_vault_resource_group_name" {
     type = string
 }
 variable "law_key_name" {

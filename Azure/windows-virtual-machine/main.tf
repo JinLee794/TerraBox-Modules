@@ -1,7 +1,7 @@
 
 data "azurerm_key_vault" "this" {
   name                = var.law_key_vault_name
-  resource_group_name = var.law_key_vault_rg_name
+  resource_group_name = var.law_key_vault_resource_group_name
 }
 
 data "azurerm_key_vault_secret" "law-win-agent-key" {
