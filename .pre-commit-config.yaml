@@ -7,16 +7,21 @@ repos:
       - id: detect-private-key
       - id: end-of-file-fixer
 
-  - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.17
+  # - repo: https://github.com/gruntwork-io/pre-commit
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.64.1
     hooks:
-      - id: terraform-fmt
+      - id: terraform_fmt
         description: runs terraform fmt
         entry: terraform fmt -recursive
         language: system
         pass_filenames: false
-      - id: terraform-validate
-      - id: tflint
+      - id: terraform_validate
+      - id: terraform_tflint
+      - id: terrascan
+        args:
+          - --args=--non-recursive # avoids scan errors on subdirectories without Terraform config files
+          - --args=--policy-type=azure
 
   - repo: https://github.com/Yelp/detect-secrets
     rev: v0.13.1
