@@ -36,7 +36,7 @@ resource "azurerm_linux_virtual_machine" "this" {
   ]
 
   admin_ssh_key {
-    username    = var.admin_username
+    username   = var.admin_username
     public_key = data.azurerm_key_vault_secret.ssh_pub_key.value
   }
 

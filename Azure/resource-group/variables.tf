@@ -11,10 +11,10 @@ variable "location" {
 variable "tags" {
   description = "Map of key value pairs for the resource tagging by business."
   type = object({
-    BusinessUnit = string
-    OperationsTeam     = string
-    BusinessCriticality       = string
-    DataClassification   = string
-    WorkloadName = string
+    BusinessUnit        = string
+    OperationsTeam      = string
+    BusinessCriticality = string
+    DataClassification  = string
+    WorkloadName        = string
   })
 }

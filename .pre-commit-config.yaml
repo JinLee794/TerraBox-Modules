@@ -11,6 +11,10 @@ repos:
     rev: v0.1.17
     hooks:
       - id: terraform-fmt
+        description: runs terraform fmt
+        entry: terraform fmt -recursive
+        language: system
+        pass_filenames: false
       - id: terraform-validate
       - id: tflint
 

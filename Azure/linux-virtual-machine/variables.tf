@@ -7,9 +7,9 @@ variable "name" {
 variable "env" {
   description = "Environment code. Accepted values of 'dev', 'uat', 'qa', 'prod'."
   type        = string
-  
+
   validation {
-    condition = contains(["dev", "uat", "qa", "prod"], var.env)
+    condition     = contains(["dev", "uat", "qa", "prod"], var.env)
     error_message = "Invalid environment provided. Accepted values are: 'dev', 'uat', 'qa', 'prod'."
   }
 }
@@ -26,7 +26,7 @@ variable "size" {
 
   # Allow only D, E, and F-series VMs
   validation {
-    condition =  can(regex(
+    condition = can(regex(
       "^Standard_[DEF][a-z0-9_-]+",
       var.size
     ))
@@ -92,10 +92,10 @@ variable "subnet_id" {
 variable "tags" {
   description = "Pre-formatted tags to apply toe the VM. See https://docs.microsoft.com/en-us/azure/virtual-machines/linux/using-tags for more information."
   type = object({
-    BusinessUnit = string
-    OperationsTeam     = string
-    BusinessCriticality       = string
-    DataClassification   = string
-    WorkloadName = string
+    BusinessUnit        = string
+    OperationsTeam      = string
+    BusinessCriticality = string
+    DataClassification  = string
+    WorkloadName        = string
   })
 }
